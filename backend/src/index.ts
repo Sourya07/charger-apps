@@ -1,42 +1,40 @@
 import express from 'express';
 import dotenv from 'dotenv';
-import usersRouter from './routes/user'; // ✅ Correct import
+import usersRouter from './routes/user';
 import chargesRouter from './routes/charger';
 import mongoose from 'mongoose';
-import cors from "cors";
+import cors from 'cors';
+import type { VercelRequest, VercelResponse } from '@vercel/node';
+
 dotenv.config();
 
 const app = express();
-const port = process.env.PORT || 3000;
-app.use(express.json());
-// Example using Express
 
+app.use(express.json());
 app.use(cors({
-    origin: 'http://localhost:5173', // or your frontend origin
+    origin: 'http://localhost:5173',
     credentials: true,
     allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 
-mongoose
-    .connect(process.env.MONGO_URL || '', {
-
-    })
-    .then(() => {
+// Connect to MongoDB only once
+let isConnected = false;
+async function connectToMongo() {
+    if (isConnected) return;
+    try {
+        await mongoose.connect(process.env.MONGO_URL || '');
+        isConnected = true;
         console.log('✅ Connected to MongoDB');
-    })
-    .catch((err) => {
+    } catch (err) {
         console.error('❌ MongoDB connection error:', err);
-        process.exit(1);
-    });
+    }
+}
+connectToMongo();
 
-
-
-app.use('/auth/v1', usersRouter); // ✅ Correct usage — passing a Router, not a function
+app.use('/auth/v1', usersRouter);
 app.use('/charges', chargesRouter);
 
-
-
-
-app.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}`);
-});
+// ✅ Export a function instead of calling app.listen()
+export default function handler(req: VercelRequest, res: VercelResponse) {
+    app(req as any, res as any);
+}
