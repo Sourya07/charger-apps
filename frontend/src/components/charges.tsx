@@ -49,8 +49,11 @@ export default function ChargerListingPage() {
 
     const token = localStorage.getItem("jwtToken")
 
+
+    const DOMAIN = import.meta.env.VITE_DOMAIN;
+
     const fetchStations = async () => {
-        const res = await axios.get('http://localhost:3000/charges/',
+        const res = await axios.get(`${DOMAIN}/charges/`,
             {
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -62,7 +65,7 @@ export default function ChargerListingPage() {
     };
 
     const handleDelete = async (id: number) => {
-        await axios.delete(`http://localhost:3000/charges/Create/${id}`,
+        await axios.delete(`${DOMAIN}/charges/Create/${id}`,
             {
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -86,7 +89,7 @@ export default function ChargerListingPage() {
         };
 
         if (form._id !== null) {
-            await axios.put(`http://localhost:3000/charges/${form._id}`, stationData,
+            await axios.put(`${DOMAIN}/charges/${form._id}`, stationData,
                 {
                     headers: {
                         'Authorization': `Bearer ${token}`,
@@ -94,7 +97,7 @@ export default function ChargerListingPage() {
                 }
             );
         } else {
-            await axios.post('http://localhost:3000/charges/Create', stationData,
+            await axios.post(`${DOMAIN}/charges/Create`, stationData,
                 {
                     headers: {
                         'Authorization': `Bearer ${token}`,

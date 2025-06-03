@@ -34,7 +34,7 @@ export default function ChargerMap() {
     const [selectedCharger, setSelectedCharger] = useState<Station | null>(null);
 
     const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
-
+    const DOMAIN = import.meta.env.VITE_DOMAIN;
 
     console.log(GOOGLE_MAPS_API_KEY)
     console.log("hihi")
@@ -46,7 +46,7 @@ export default function ChargerMap() {
     useEffect(() => {
         const fetchChargers = async () => {
             try {
-                const res = await axios.get("http://localhost:3000/charges",
+                const res = await axios.get(`${DOMAIN}/charges`,
                     {
                         headers: {
                             'Authorization': `Bearer ${token}`,

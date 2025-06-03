@@ -14,11 +14,15 @@ export default function AuthPage() {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
+
+
     const handleSubmit = async (e: any) => {
         e.preventDefault();
+        const DOMAIN = import.meta.env.VITE_DOMAIN
+
         const endpoint = isSignup
-            ? "http://localhost:3000/auth/v1/signup"
-            : "http://localhost:3000/auth/v1/signin";
+            ? `${DOMAIN}/auth/v1/signup`
+            : `${DOMAIN}/auth/v1/signin`;
 
         try {
             const res = await axios.post(endpoint, formData, {
