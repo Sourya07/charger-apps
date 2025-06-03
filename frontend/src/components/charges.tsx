@@ -58,7 +58,7 @@ export default function ChargerListingPage() {
             });
 
         setStations(res.data);
-        console.log(res)
+
     };
 
     const handleDelete = async (id: number) => {
@@ -127,6 +127,7 @@ export default function ChargerListingPage() {
     return (
         <div className="p-4 max-w-4xl mx-auto">
             <h1 className="text-2xl font-bold mb-4">Charger Stations</h1>
+            <p>filter option</p>
 
             {/* Filters */}
             <div className="grid grid-cols-3 gap-4 mb-6">
@@ -148,7 +149,9 @@ export default function ChargerListingPage() {
                     className="p-2 border rounded"
                 />
             </div>
-
+            <h2>
+                Add stations
+            </h2>
             {/* Form */}
             <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-4 mb-6">
                 <input
