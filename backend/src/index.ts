@@ -11,10 +11,22 @@ dotenv.config();
 const app = express();
 
 app.use(express.json());
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://charger-apps-tlq9.vercel.app'
+];
+
 app.use(cors({
-    origin: 'https://charger-apps-tlq9.vercel.app',
-    credentials: true,
-    allowedHeaders: ['Content-Type', 'Authorization'],
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps, Postman)
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
+  allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 
 // Connect to MongoDB only once
